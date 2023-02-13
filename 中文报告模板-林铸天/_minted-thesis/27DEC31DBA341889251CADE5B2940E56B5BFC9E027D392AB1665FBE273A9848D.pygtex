@@ -1,0 +1,46 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+train set
+用户数量： 19835
+商品数量： 455705
+评分数量： 5001507
+
+\PYGZpc{} 为了能够预测模型的优劣，我们将train set按照9:1切分为train data和validate data。
+\PYGZpc{} 并且为了预测的鲁棒性，我们保证了train data中包含了所有的品种，使得我们的训练结果不会对某种商品是茫然无知的。
+
+validate data
+用户数量： 455124
+商品数量： 118599
+评分数量： 455124
+
+train data
+用户数量： 4546383
+商品数量： 455705
+评分数量： 4546383
+
+test data
+用户数量： 19835
+商品数量： 28292
+评分数量： 119010
+
+item attribute
+商品数量： 624961
+商品属性统计信息：
+count    624961.000000
+mean     234039.891956
+std      207878.812544
+min           0.000000
+25\PYGZpc{}           0.000000
+50\PYGZpc{}      206339.000000
+75\PYGZpc{}      418894.000000
+max      624943.000000
+Name: attribute1, dtype: float64
+count    624961.000000
+mean     221134.948469
+std      207181.520174
+min           0.000000
+25\PYGZpc{}           0.000000
+50\PYGZpc{}      188235.000000
+75\PYGZpc{}      401338.000000
+max      624951.000000
+Name: attribute2, dtype: float64
+\end{Verbatim}

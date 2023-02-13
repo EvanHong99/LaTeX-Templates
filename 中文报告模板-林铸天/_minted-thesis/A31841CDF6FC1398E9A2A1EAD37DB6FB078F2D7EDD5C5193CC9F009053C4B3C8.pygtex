@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}norm\PYGZdq{}}\PYG{p}{]} \PYG{o}{=}
+	\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}attribute1\PYGZdq{}}\PYG{p}{]} \PYG{o}{**} \PYG{l+m+mi}{2}
+	\PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}attribute2\PYGZdq{}}\PYG{p}{]} \PYG{o}{**} \PYG{l+m+mi}{2}\PYG{p}{)} \PYG{o}{**} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{)}
+\end{Verbatim}

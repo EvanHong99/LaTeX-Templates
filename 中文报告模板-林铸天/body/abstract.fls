@@ -1,0 +1,7 @@
+PWD E:/2020秋季学期文件夹/48 latex/中文报告模板/body
+INPUT d:/texlive/2019/texmf.cnf
+INPUT d:/texlive/2019/texmf-dist/web2c/texmf.cnf
+INPUT d:/texlive/2019/texmf-var/web2c/xetex/xelatex.fmt
+INPUT abstract.tex
+OUTPUT abstract.log
+OUTPUT abstract.xdv

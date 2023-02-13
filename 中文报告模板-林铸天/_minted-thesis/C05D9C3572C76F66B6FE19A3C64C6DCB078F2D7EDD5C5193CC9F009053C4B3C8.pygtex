@@ -1,0 +1,76 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{def} \PYG{n+nf}{collaborative\PYGZus{}filtering\PYGZus{}bias}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+	\PYG{c+c1}{\PYGZsh{} 协同过滤算法}
+	\PYG{n}{predict\PYGZus{}rate} \PYG{o}{=} \PYG{p}{[]}
+	\PYG{k}{for} \PYG{n}{index}\PYG{p}{,} \PYG{n}{row} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{train\PYGZus{}test\PYGZus{}data}\PYG{o}{.}\PYG{n}{values}\PYG{p}{):}
+		\PYG{n}{user}\PYG{p}{,} \PYG{n}{item\PYGZus{}x}\PYG{p}{,} \PYG{n}{pred\PYGZus{}score\PYGZus{}x} \PYG{o}{=} \PYG{n}{row}
+		\PYG{n}{score\PYGZus{}x} \PYG{o}{=} \PYG{l+m+mi}{0}
+		\PYG{n}{b\PYGZus{}x} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}deviation\PYGZus{}of\PYGZus{}item\PYGZdq{}}\PYG{p}{][}\PYG{n}{item\PYGZus{}x}\PYG{p}{]} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}overall\PYGZus{}mean\PYGZdq{}}\PYG{p}{]}
+		\PYG{n}{similar\PYGZus{}item} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+		\PYG{c+c1}{\PYGZsh{} 计算物品相似度}
+		\PYG{k}{for} \PYG{n}{item\PYGZus{}y} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{user\PYGZus{}item\PYGZus{}train\PYGZus{}data}\PYG{p}{[}\PYG{n}{user}\PYG{p}{]}\PYG{o}{.}\PYG{n}{keys}\PYG{p}{():}
+			\PYG{k}{if} \PYG{n}{item\PYGZus{}x} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map} \PYG{o+ow}{and} \PYG{n}{item\PYGZus{}y} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{]:}
+				\PYG{n}{similar\PYGZus{}item}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{][}\PYG{n}{item\PYGZus{}y}\PYG{p}{]}
+			\PYG{k}{elif} \PYG{n}{item\PYGZus{}y} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map} \PYG{o+ow}{and} \PYG{n}{item\PYGZus{}x} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{]:}
+				\PYG{n}{similar\PYGZus{}item}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{][}\PYG{n}{item\PYGZus{}x}\PYG{p}{]}
+			\PYG{k}{else}\PYG{p}{:}
+				\PYG{n}{b\PYGZus{}y} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}deviation\PYGZus{}of\PYGZus{}item\PYGZdq{}}\PYG{p}{][}\PYG{n}{item\PYGZus{}y}\PYG{p}{]} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}overall\PYGZus{}mean\PYGZdq{}}\PYG{p}{]}
+				\PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{0} \PYG{o+ow}{or} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+					\PYG{n}{attribute\PYGZus{}similarity} \PYG{o}{=} \PYG{l+m+mi}{0}
+				\PYG{k}{else}\PYG{p}{:}
+					\PYG{n}{attribute\PYGZus{}similarity} \PYG{o}{=} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{*} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}
+											\PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{*} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{])} \PYGZbs{}
+										\PYG{o}{/} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{*} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}attributes}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{])}
+				\PYG{n}{norm\PYGZus{}x} \PYG{o}{=} \PYG{l+m+mi}{0}
+				\PYG{n}{norm\PYGZus{}y} \PYG{o}{=} \PYG{l+m+mi}{0}
+				\PYG{n}{pearson\PYGZus{}similarity} \PYG{o}{=} \PYG{l+m+mi}{0}
+				\PYG{n}{count} \PYG{o}{=} \PYG{l+m+mi}{0}
+				\PYG{k}{for} \PYG{n}{same\PYGZus{}user}\PYG{p}{,} \PYG{n}{score} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}user\PYGZus{}train\PYGZus{}data}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{]}\PYG{o}{.}\PYG{n}{items}\PYG{p}{():}
+					\PYG{k}{if} \PYG{n}{same\PYGZus{}user} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}user\PYGZus{}train\PYGZus{}data}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{]:}
+						\PYG{k}{continue}
+					\PYG{n}{count} \PYG{o}{+=} \PYG{l+m+mi}{1}
+					\PYG{n}{pearson\PYGZus{}similarity} \PYG{o}{+=} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}user\PYGZus{}train\PYGZus{}data}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{][}\PYG{n}{same\PYGZus{}user}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{b\PYGZus{}x}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}
+							\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}user\PYGZus{}train\PYGZus{}data}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{][}\PYG{n}{same\PYGZus{}user}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{b\PYGZus{}y}\PYG{p}{)}
+					\PYG{n}{norm\PYGZus{}x} \PYG{o}{+=} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}user\PYGZus{}train\PYGZus{}data}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{][}\PYG{n}{same\PYGZus{}user}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{b\PYGZus{}x}\PYG{p}{)} \PYG{o}{**} \PYG{l+m+mi}{2}
+					\PYG{n}{norm\PYGZus{}y} \PYG{o}{+=} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}user\PYGZus{}train\PYGZus{}data}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{][}\PYG{n}{same\PYGZus{}user}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{b\PYGZus{}y}\PYG{p}{)} \PYG{o}{**} \PYG{l+m+mi}{2}
+				\PYG{k}{if} \PYG{n}{count} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{20}\PYG{p}{:}
+					\PYG{n}{pearson\PYGZus{}similarity} \PYG{o}{=} \PYG{l+m+mi}{0}
+				\PYG{k}{if} \PYG{n}{pearson\PYGZus{}similarity} \PYG{o}{!=} \PYG{l+m+mi}{0}\PYG{p}{:}
+					\PYG{n}{pearson\PYGZus{}similarity} \PYG{o}{/=} \PYG{p}{(}\PYG{n}{norm\PYGZus{}x} \PYG{o}{*} \PYG{n}{norm\PYGZus{}y}\PYG{p}{)} \PYG{o}{**} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{)}
+
+				\PYG{n}{similarity} \PYG{o}{=} \PYG{p}{(}\PYG{n}{pearson\PYGZus{}similarity} \PYG{o}{+} \PYG{n}{attribute\PYGZus{}similarity}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2}
+
+				\PYG{k}{if} \PYG{n}{item\PYGZus{}x} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map}\PYG{p}{:}
+					\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{]} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+				\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map}\PYG{p}{[}\PYG{n}{item\PYGZus{}x}\PYG{p}{][}\PYG{n}{item\PYGZus{}y}\PYG{p}{]} \PYG{o}{=} \PYG{n}{similarity}
+
+				\PYG{n}{similar\PYGZus{}item}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{]} \PYG{o}{=} \PYG{n}{similarity}
+
+		\PYG{n}{similar\PYGZus{}item} \PYG{o}{=} \PYG{n+nb}{sorted}\PYG{p}{(}\PYG{n}{similar\PYGZus{}item}\PYG{o}{.}\PYG{n}{items}\PYG{p}{(),} \PYG{n}{key}\PYG{o}{=}\PYG{k}{lambda} \PYG{n}{item}\PYG{p}{:} \PYG{n}{item}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{reverse}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+		\PYG{n}{b\PYGZus{}x} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}overall\PYGZus{}mean\PYGZsq{}}\PYG{p}{]} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}deviation\PYGZus{}of\PYGZus{}item\PYGZsq{}}\PYG{p}{][}\PYG{n}{item\PYGZus{}x}\PYG{p}{]} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}deviation\PYGZus{}of\PYGZus{}user\PYGZsq{}}\PYG{p}{][}
+			\PYG{n}{user}\PYG{p}{]}
+		\PYG{n}{norm} \PYG{o}{=} \PYG{l+m+mi}{0}
+		\PYG{k}{for} \PYG{n}{i}\PYG{p}{,} \PYG{p}{(}\PYG{n}{item\PYGZus{}y}\PYG{p}{,} \PYG{n}{similarity}\PYG{p}{)} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{similar\PYGZus{}item}\PYG{p}{):}
+			\PYG{k}{if} \PYG{n}{i} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{100}\PYG{p}{:}
+				\PYG{k}{break}
+			\PYG{n}{b\PYGZus{}y} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}overall\PYGZus{}mean\PYGZsq{}}\PYG{p}{]} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}deviation\PYGZus{}of\PYGZus{}item\PYGZsq{}}\PYG{p}{][}\PYG{n}{item\PYGZus{}y}\PYG{p}{]} \PYG{o}{+} \PYGZbs{}
+				\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bias}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}deviation\PYGZus{}of\PYGZus{}user\PYGZsq{}}\PYG{p}{][}\PYG{n}{user}\PYG{p}{]}
+			\PYG{n}{score\PYGZus{}x} \PYG{o}{+=} \PYG{n}{similarity} \PYG{o}{*} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{item\PYGZus{}user\PYGZus{}train\PYGZus{}data}\PYG{p}{[}\PYG{n}{item\PYGZus{}y}\PYG{p}{][}\PYG{n}{user}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{b\PYGZus{}y}\PYG{p}{)}
+			\PYG{n}{norm} \PYG{o}{+=} \PYG{n}{similarity}
+		\PYG{k}{if} \PYG{n}{norm} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+			\PYG{n}{score\PYGZus{}x} \PYG{o}{=} \PYG{l+m+mi}{0}
+		\PYG{k}{else}\PYG{p}{:}
+			\PYG{n}{score\PYGZus{}x} \PYG{o}{/=} \PYG{n}{norm}
+		\PYG{n}{score\PYGZus{}x} \PYG{o}{+=} \PYG{n}{b\PYGZus{}x}
+		\PYG{n}{score\PYGZus{}x} \PYG{o}{=} \PYG{n}{score\PYGZus{}x} \PYG{k}{if} \PYG{n}{score\PYGZus{}x} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0} \PYG{k}{else} \PYG{l+m+mi}{0}
+		\PYG{n}{score\PYGZus{}x} \PYG{o}{=} \PYG{n}{score\PYGZus{}x} \PYG{k}{if} \PYG{n}{score\PYGZus{}x} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{100} \PYG{k}{else} \PYG{l+m+mi}{100}
+		\PYG{n}{predict\PYGZus{}rate}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{score\PYGZus{}x}\PYG{p}{)}
+		\PYG{k}{if} \PYG{n}{index} \PYG{o}{\PYGZpc{}} \PYG{l+m+mi}{500} \PYG{o}{==} \PYG{l+m+mi}{0} \PYG{o+ow}{and} \PYG{n}{index} \PYG{o}{!=} \PYG{l+m+mi}{0}\PYG{p}{:}
+			\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}已预测\PYGZdq{}}\PYG{p}{,} \PYG{n}{index}\PYG{p}{)}
+		\PYG{k}{if} \PYG{n}{index} \PYG{o}{\PYGZpc{}} \PYG{l+m+mi}{5000} \PYG{o}{==} \PYG{l+m+mi}{0} \PYG{o+ow}{and} \PYG{n}{index} \PYG{o}{!=} \PYG{l+m+mi}{0}\PYG{p}{:}
+			\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}RMSE: \PYGZdq{}}\PYG{p}{,} \PYG{n}{cal\PYGZus{}RMSE}\PYG{p}{(}\PYG{n}{predict\PYGZus{}rate}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{train\PYGZus{}test\PYGZus{}data}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}score\PYGZsq{}}\PYG{p}{][:}\PYG{n}{index} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{]))}
+		\PYG{k}{if} \PYG{n}{index} \PYG{o}{\PYGZpc{}} \PYG{l+m+mi}{200000} \PYG{o}{==} \PYG{l+m+mi}{0} \PYG{o+ow}{and} \PYG{n}{index} \PYG{o}{!=} \PYG{l+m+mi}{0}\PYG{p}{:}
+			\PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}data/similarity\PYGZus{}map.pickle\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}wb\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{f}\PYG{p}{:}
+				\PYG{n}{pickle}\PYG{o}{.}\PYG{n}{dump}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{similarity\PYGZus{}map}\PYG{p}{,} \PYG{n}{f}\PYG{p}{)}
+	\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}RMSE: \PYGZdq{}}\PYG{p}{,} \PYG{n}{cal\PYGZus{}RMSE}\PYG{p}{(}\PYG{n}{predict\PYGZus{}rate}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{train\PYGZus{}test\PYGZus{}data}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}score\PYGZsq{}}\PYG{p}{]))}
+\end{Verbatim}

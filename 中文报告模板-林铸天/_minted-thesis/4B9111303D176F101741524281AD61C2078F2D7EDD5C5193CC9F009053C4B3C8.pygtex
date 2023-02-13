@@ -1,0 +1,27 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k}{def} \PYG{n+nf}{gradient\PYGZus{}descent}\PYG{p}{(}\PYG{n}{P}\PYG{p}{,} \PYG{n}{Q}\PYG{p}{,} \PYG{n}{search\PYGZus{}df}\PYG{p}{,} \PYG{n}{lambda\PYGZus{}p}\PYG{p}{,} \PYG{n}{lambda\PYGZus{}q}\PYG{p}{,} \PYG{n}{lr}\PYG{o}{=}\PYG{l+m+mf}{0.01}\PYG{p}{):}
+	\PYG{o}{...}
+	\PYG{k}{for} \PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{line} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{search\PYGZus{}df}\PYG{o}{.}\PYG{n}{values}\PYG{p}{):}  \PYG{c+c1}{\PYGZsh{} enumerate(search\PYGZus{}df.iterrows()):}
+		\PYG{n}{sys}\PYG{o}{.}\PYG{n}{stdout}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}r}\PYG{l+s+s1}{梯度下降更新进度\PYGZhy{}\PYGZhy{}\PYGZgt{}\PYGZsq{}} \PYG{o}{+} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n+nb}{round}\PYG{p}{(}\PYG{n}{\PYGZus{}} \PYG{o}{/} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{search\PYGZus{}df}\PYG{p}{),} \PYG{l+m+mi}{4}\PYG{p}{)))}
+		\PYG{n}{sys}\PYG{o}{.}\PYG{n}{stdout}\PYG{o}{.}\PYG{n}{flush}\PYG{p}{()}
+		\PYG{n}{u} \PYG{o}{=} \PYG{n}{line}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+		\PYG{n}{i} \PYG{o}{=} \PYG{n}{line}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}
+		\PYG{n}{s} \PYG{o}{=} \PYG{n}{line}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}
+		\PYG{n}{eui} \PYG{o}{=} \PYG{n}{s} \PYG{o}{\PYGZhy{}} \PYG{n}{np}\PYG{o}{.}\PYG{n}{matmul}\PYG{p}{(}\PYG{n}{P}\PYG{p}{[}\PYG{n}{u}\PYG{p}{,} \PYG{p}{:],} \PYG{n}{Q}\PYG{p}{[:,} \PYG{n}{i}\PYG{p}{])}
+
+		\PYG{n}{Q}\PYG{p}{[:,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{lr} \PYG{o}{*} \PYG{n}{eui} \PYG{o}{*} \PYG{n}{P}\PYG{p}{[}\PYG{n}{u}\PYG{p}{,} \PYG{p}{:]}\PYG{o}{.}\PYG{n}{T} \PYG{o}{\PYGZhy{}} \PYG{n}{lambda\PYGZus{}q} \PYG{o}{*} \PYG{n}{Q}\PYG{p}{[:,} \PYG{n}{i}\PYG{p}{]} \PYG{o}{*} \PYG{n}{lr}
+		\PYG{n}{P}\PYG{p}{[}\PYG{n}{u}\PYG{p}{,} \PYG{p}{:]} \PYG{o}{+=} \PYG{n}{lr} \PYG{o}{*} \PYG{n}{eui} \PYG{o}{*} \PYG{n}{Q}\PYG{p}{[:,} \PYG{n}{i}\PYG{p}{]}\PYG{o}{.}\PYG{n}{T} \PYG{o}{\PYGZhy{}} \PYG{n}{lambda\PYGZus{}p} \PYG{o}{*} \PYG{n}{P}\PYG{p}{[}\PYG{n}{u}\PYG{p}{,} \PYG{p}{:]} \PYG{o}{*} \PYG{n}{lr}
+	\PYG{o}{...}
+
+\PYG{k}{def} \PYG{n+nf}{cal\PYGZus{}rmse}\PYG{p}{(}\PYG{n}{ds}\PYG{p}{,} \PYG{n}{P}\PYG{p}{,} \PYG{n}{Q}\PYG{p}{):}
+	\PYG{o}{...}
+	\PYG{n}{true\PYGZus{}val} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{ds}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}score\PYGZsq{}}\PYG{p}{])}
+	\PYG{n}{pred\PYGZus{}val} \PYG{o}{=} \PYG{p}{[]}
+	\PYG{k}{for} \PYG{n}{\PYGZus{}i}\PYG{p}{,} \PYG{n}{line} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{ds}\PYG{o}{.}\PYG{n}{values}\PYG{p}{):}
+		\PYG{n}{u} \PYG{o}{=} \PYG{n}{line}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+		\PYG{n}{i} \PYG{o}{=} \PYG{n}{line}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}
+		\PYG{n}{pred\PYGZus{}val}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{matmul}\PYG{p}{(}\PYG{n}{P}\PYG{p}{[}\PYG{n}{u}\PYG{p}{,} \PYG{p}{:],} \PYG{n}{Q}\PYG{p}{[:,} \PYG{n}{i}\PYG{p}{]))}
+		
+	\PYG{n}{rmse} \PYG{o}{=} \PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{((}\PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{pred\PYGZus{}val}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{true\PYGZus{}val}\PYG{p}{)} \PYG{o}{**} \PYG{l+m+mi}{2}\PYG{p}{)} \PYG{o}{/} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{true\PYGZus{}val}\PYG{p}{))} \PYG{o}{**} \PYG{l+m+mf}{0.5}
+	\PYG{o}{...}
+\end{Verbatim}

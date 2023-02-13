@@ -1,0 +1,150 @@
+%!TEX program = xelatex
+% 完整编译: xelatex -> bibtex -> xelatex -> xelatex
+%-- coding: UTF-8 --
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+\usepackage{ctex}
+\usepackage{graphicx}
+\usepackage{color,framed}%文本框
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{bm} 
+\usepackage{lastpage}%获得总页数
+\usepackage{fancyhdr}
+\usepackage{tabularx}  
+\usepackage{geometry}
+\usepackage{minted}
+\usepackage{zhlipsum}
+\usepackage[colorlinks = true]{hyperref}
+\usepackage{array}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+%书签
+
+%页面边距
+\geometry{a4paper,left=2.3cm,right=2.3cm,top=2.7cm,bottom=2.7cm}
+
+%代码段设置
+\lstset{numbers=left,
+basicstyle=\tiny,
+numberstyle=\tiny,
+keywordstyle=\color{blue!70},
+commentstyle=\color{red!50!green!50!blue!50},
+frame=single, rulesepcolor=\color{red!20!green!20!blue!20},
+escapeinside=``
+}
+
+
+
+\pagestyle{fancy}
+\lhead{编译原理作业}
+\rhead{\rightmark}
+\cfoot{\thepage\ of\ \pageref{LastPage}}%当前页 of 总页数
+\renewcommand{\headrulewidth}{0.4pt}%改为0pt即可去掉页眉下面的横线
+\renewcommand{\footrulewidth}{0.4pt}%改为0pt即可去掉页脚上面的横线
+
+
+
+\begin{document}
+\renewcommand {\thefigure} {\thesection{}.\arabic{figure}}%图片按章标号
+\renewcommand{\figurename}{图}
+\renewcommand{\contentsname}{目录}           % 对Contents 进行汉化为目录
+
+
+\title{\zihao{2}\kaishu{\textbf{编译原理作业1}}}
+\author{\zihao{4}\ \kaishu{1811363 \\ 洪一帆}\ }
+\date{September 2020}
+\maketitle
+
+\newpage
+\tableofcontents
+
+\newpage
+
+\section{Section1}
+
+\zhlipsum[1]
+% \begin{lstlisting}
+\begin{minted}[mathescape,
+               linenos,
+               numbersep=5pt,
+               gobble=2,
+               frame=lines,
+               framesep=2mm,
+               ]{c++}
+    #include<stdio.h>
+    int main(){
+        int a,b;
+        // 输入变量
+        scanf("%d%d",&a,&b);
+        // 输出结果
+        printf("Hello World %d\n",a+b);
+        return 0;
+    }
+\end{minted}
+
+\subsection{预编译}
+pdflatex -shell-escape 1811363\_洪一帆.tex
+gcc main.c -E -o main.i
+
+主要用于处理\#有关的代码
+
+删除\#define，展开所有宏定义。例\#define portnumber 3333
+
+处理条件预编译 \#if, \#ifdef, \#if, \#elif,\#endif
+
+处理“\#include”预编译指令，将包含的“\.h”文件插入对应位置。这可是递归进行的，文件内可能包含其他“\.h”文件。
+
+删除所有注释。/**/，//。
+
+添加行号和文件标识符。用于显示调试信息：错误或警告的位置。
+
+保留\#pragma编译器指令。（1）设定编译器状态，（2）指示编译器完成一些特定的动作。
+
+
+\subsection{Subsection1}
+
+特殊字符$\lambda$
+
+
+\begin{quote}
+    鲁迅：这是一段引用。
+\end{quote}
+
+\subsection{Subsection2}
+\zhlipsum[1]
+
+\subsection{Subsection2}
+
+\paragraph{\texttt{段落}} \zhlipsum[1]
+
+\begin{enumerate}
+    \item 列表1 \footnote{这里是脚注。}。
+    \item 列表2：带有\href{https://www.runoob.com/}{超链接}。
+\end{enumerate}
+
+
+\section{Section2}
+
+\subsection{Subsection1: 另一种代码段}
+
+\begin{lstlisting}
+sudo apt update
+sudo apt install build-essential
+sudo apt install gcc-multilib
+sudo apt install -y flex
+sudo apt install -y bison
+sudo apt install -y qemu
+sudo apt install -y qemu-system
+sudo apt install -y qemu-user
+\end{lstlisting}
+
+\subsection{Subsection2: 你可能要加引用}
+
+看\href{https://www.overleaf.com/learn/latex/bibliography_management_with_bibtex}{这里}。
+
+\end{document}
+
+
